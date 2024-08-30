@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ग्राम पंचायत येवता</title>
+    <title> Adhikari Form</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         body {
@@ -21,6 +21,7 @@
             position: relative;
             box-sizing: border-box;
             margin-left: 400px;
+            /* background-image: url(national.avif); */
         }
 
         .header {
@@ -42,24 +43,9 @@
             cursor: pointer;
         }
 
-        .bell-icon-container {
-            position: relative;
-        }
-
-        .bell-icon {
+        .plus-icon {
             font-size: 30px;
             cursor: pointer;
-        }
-
-        .notification-count {
-            position: absolute;
-            top: -5px;
-            right: -10px;
-            background-color: red;
-            color: white;
-            border-radius: 50%;
-            padding: 3px 6px;
-            font-size: 12px;
         }
 
         .footer {
@@ -83,7 +69,7 @@
             justify-content: space-around;
             margin: 20px 10px;
             background-color: #ffffff;
-            box-shadow: 0 2px 4px rgba(8, 8, 8, 0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             border: 1px solid #f5f2f2;
             border-radius: 5px;
         }
@@ -95,11 +81,11 @@
         .button {
             background-color: white;
             border: 1px solid #e7e5e5;
-            padding: 10px;
+            padding: 10px; /* Reduced padding */
             text-align: center;
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(66, 73, 81, 0.1);
-            font-size: 14px;
+            font-size: 14px; /* Reduced font size */
             cursor: pointer;
             transition: background-color 0.3s;
             text-decoration: none;
@@ -116,13 +102,22 @@
         }
 
         .button i {
-            font-size: 30px;
+            font-size: 30px; /* Reduced icon size */
             margin-bottom: 5px;
-            color: rgb(62, 59, 59);
+            color: rgb(62, 59, 59); /* Set icon color */
         }
 
         .button p {
-            margin: 5px 0 0 0;
+            margin: 5px 0 0 0; /* Adjust margins to position text at the bottom */
+        }
+
+        .message-form {
+            display: none;
+            padding: 20px;
+            margin: 20px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
         }
 
         .google-image-container {
@@ -143,8 +138,8 @@
             }
 
             .button {
-                padding: 8px;
-                font-size: 12px;
+                padding: 8px; /* Further reduced padding for smaller screens */
+                font-size: 12px; /* Further reduced font size for smaller screens */
             }
 
             .container {
@@ -164,11 +159,16 @@
         <div class="header">
             <span class="menu-button">&#9776;</span> <!-- Menu Button -->
             <div>ग्राम पंचायत येवता</div>
-            <div class="bell-icon-container">
-                <i class="material-icons bell-icon" id="bellIcon">notifications</i>
-                <span class="notification-count" id="notificationCount">0</span>
+            <span class="plus-icon" id="plusIcon">+</span> <!-- Plus Icon -->
+        </div>
 
-            </div>
+        <!-- Message Form -->
+        <div class="message-form" id="messageForm">
+            <form id="messageFormSubmit">
+                <label for="message">Enter your message:</label>
+                <input type="text" id="message" name="message" required>
+                <button type="submit">Submit</button>
+            </form>
         </div>
 
         <div class="button-grid">
@@ -233,13 +233,9 @@
                 <i class="material-icons">agriculture</i>
                 <p>शेतकरी योजना</p>
             </a>
-            <a href="https://kanchankb.github.io/IndiraawasYojana/" class="button">
-                <i class="material-icons">home_work</i>
-                <p>इंदिरा आवास योजना</p>
-            </a>
-            <a href="https://snehal-g-gaikwad.github.io/Demand-Registration/" class="button">
-                <i class="material-icons">feedback</i>
-                <p>सर्वेक्षण</p>
+            <a href="https://vaishdube9309.github.io/ShindiHarali/" class="button">
+                <i class="material-icons">home</i>
+                <p>घरकुल योजना</p>
             </a>
         </div>
 
@@ -251,29 +247,40 @@
         </div>
 
         <div class="footer">
-            &copy; 2024 Digispect Technologies Pvt Ltd.
+            &copy; 2024 Digispect Technologies
         </div>
     </div>
 
     <script>
-        const fetchURL = 'https://script.google.com/macros/s/AKfycbwj4X14gJSNKHOdpZRiiWnUDWP3WmSXpOq4Jf0f0OlWWUDrhwDDlnyVW4TceSYSk1hWpg/exec';
+        // Show the message form when the plus icon is clicked
+        document.getElementById('plusIcon').addEventListener('click', function() {
+            const form = document.getElementById('messageForm');
+            form.style.display = (form.style.display === 'none' || form.style.display === '') ? 'block' : 'none';
+        });
 
-fetch(fetchURL)
-    .then(response => response.json())
-    .then(data => {
-        console.log(data); // This should log the entire 'messages' array
-        const messages = data.messages || []; // Handle cases where messages might be undefined
-        document.getElementById('notificationCount').textContent = messages.length;
-    })
-    .catch(error => console.error('Error:', error));
+        // Handle form submission
+        document.getElementById('messageFormSubmit').addEventListener('submit', function(e) {
+            e.preventDefault();
 
-    
-        // Optional: Add an event listener to show messages when the bell icon is clicked
-        document.getElementById('bellIcon').addEventListener('click', () => {
-            alert('You have ' + document.getElementById('notificationCount').textContent + ' new messages!');
+            const message = document.getElementById('message').value;
+
+            // Google Apps Script URL (replace with your script URL)
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbwj4X14gJSNKHOdpZRiiWnUDWP3WmSXpOq4Jf0f0OlWWUDrhwDDlnyVW4TceSYSk1hWpg/exec';
+
+            fetch(scriptURL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({ 'message': message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Message saved successfully!');
+                document.getElementById('messageForm').style.display = 'none'; // Hide the form
+                document.getElementById('messageFormSubmit').reset(); // Clear the form
+            })
+            .catch(error => console.error('Error:', error));
         });
     </script>
-    
 </body>
 
 </html>
